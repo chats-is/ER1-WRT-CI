@@ -119,3 +119,25 @@ fi
 # sed -i 's/UTC/CST-8/' "$GITHUB_WORKSPACE/wrt/package/base-files/files/etc/config/system"
 
 echo "==> 私有扩展脚本执行完毕!"
+
+# ------------------------------------------------------------
+# PassWall 官方最新版
+# ------------------------------------------------------------
+
+# 删除 feeds 中可能存在的旧版 PassWall
+rm -rf ../feeds/luci/applications/luci-app-passwall
+
+# 删除可能与官方版本冲突的代理核心包
+rm -rf ../feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
+
+# 引入官方最新依赖包
+git clone --depth 1 \
+    https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git \
+    ./passwall-packages
+
+# 引入官方最新 PassWall
+git clone --depth 1 \
+    https://github.com/Openwrt-Passwall/openwrt-passwall.git \
+    ./passwall-luci
+
+echo "==> PassWall 官方最新版源码引入完成!"
