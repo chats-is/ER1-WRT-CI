@@ -111,15 +111,8 @@ if [ -n "$DDNS" ]; then
     sed -i "s/'textarea', { 'style': 'width:100%;/'textarea', { 'style': 'width:100%; overflow-y:auto;/" "$DDNS" && echo "fix: DDNS log scroll"
 fi
 
-# Add luci-theme-shadcn
-if [ ! -d "./package/luci-theme-shadcn" ]; then
-    git clone --depth 1 https://github.com/eamonxg/luci-theme-shadcn.git ./package/luci-theme-shadcn
-fi
-
 # PassWall core packages
-rm -rf ../feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
 git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git ./package/passwall-packages
-
 
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
