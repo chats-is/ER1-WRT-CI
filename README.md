@@ -48,11 +48,11 @@ Config/
 
 | 变量名 | 说明 | 默认值 |
 |--------|------|--------|
-| `WRT_THEME` | 默认主题 | `aurora` |
-| `WRT_NAME` | 主机名 | `OWRT` |
-| `WRT_SSID` | WiFi 名称 | `OWRT` |
+| `WRT_THEME` | 默认主题 | `shadcn` |
+| `WRT_NAME` | 主机名 | `OpenWrt` |
+| `WRT_SSID` | WiFi 名称 | `OpenWrt` |
 | `WRT_WORD` | WiFi 密码 | `12345678` |
-| `WRT_IP` | 管理地址 | `192.168.10.1` |
+| `WRT_IP` | 管理地址 | `192.168.20.1` |
 | `WRT_PW` | 密码提示 (仅展示) | `无` |
 
 ### 2. Scripts/PRIVATE.sh - 补丁脚本
