@@ -137,12 +137,21 @@ else
 fi
 
 # ============================================================
-# Remove WRT_MARK prefix from LuCI version
+# Update LuCI version suffix
 # ============================================================
 SETTINGS_SCRIPT="$GITHUB_WORKSPACE/Scripts/Settings.sh"
 if [ -f "$SETTINGS_SCRIPT" ]; then
-    sed -i 's/\$WRT_MARK-\$WRT_DATE/\$WRT_DATE/g' "$SETTINGS_SCRIPT"
-    echo "LuCI version date suffix updated."
+    # Disable original version injection
+    sed -i '\|find ./feeds/luci/modules/luci-mod-status/.*10_system.js|s/^/# /' "$SETTINGS_SCRIPT"
+
+    # Add new version injection (date only)
+    cat >> "$SETTINGS_SCRIPT" <<'EOF'
+
+# Add build date to LuCI version
+find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js" -exec sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_DATE')/g" {} +
+EOF
+
+    echo "LuCI version suffix changed to date only."
 else
     echo "Warning: Settings.sh not found: $SETTINGS_SCRIPT"
 fi
