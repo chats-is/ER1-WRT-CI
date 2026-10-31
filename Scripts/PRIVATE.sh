@@ -118,19 +118,20 @@ rm -rf ../feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2s
 git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git ./passwall-packages
 
 # ============================================================
-# shadcn theme - Remove login image and center login form
+# shadcn theme - Remove login image and logo
 # ============================================================
-
 SHADCN_LOGIN="$(find . -path '*/ucode/template/themes/shadcn/sysauth.ut' -print -quit)"
-
 if [ -n "$SHADCN_LOGIN" ]; then
-    # Remove login background image
+    # Remove background image
     sed -i '/--login-bg-image:url/d' "$SHADCN_LOGIN"
 
     # Remove right image panel
     sed -i '/<!-- Image panel (right) -->/,/<\/section>/d' "$SHADCN_LOGIN"
 
-    echo "shadcn login image removed; login form centered."
+    # Remove login logo
+    sed -i '/login-logo/d' "$SHADCN_LOGIN"
+
+    echo "shadcn login image and logo removed."
 else
     echo "Warning: shadcn sysauth.ut not found."
 fi
