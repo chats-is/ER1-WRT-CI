@@ -44,7 +44,7 @@ UPDATE_PACKAGE "luci-app-onliner" "ftkey/openwrt_pkgs" "main" "pkg"
 UPDATE_PACKAGE "luci-app-socat" "ftkey/openwrt_pkgs" "main" "pkg"
 
 # 替换上游 Argon 主题为自维护版本 (上游 sbwml/luci-theme-argon 有 bug)
-# UPDATE_PACKAGE "luci-theme-argon" "ftkey/openwrt_pkgs" "main" "pkg"
+UPDATE_PACKAGE "luci-theme-argon" "ftkey/openwrt_pkgs" "main" "pkg"
 
 echo "==> 自定义软件包检查完成!"
 
