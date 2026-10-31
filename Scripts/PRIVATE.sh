@@ -136,24 +136,20 @@ else
     echo "Warning: shadcn sysauth.ut not found."
 fi
 
-# ============================================================
-# Update LuCI version suffix
-# ============================================================
-SETTINGS_SCRIPT="$GITHUB_WORKSPACE/Scripts/Settings.sh"
-if [ -f "$SETTINGS_SCRIPT" ]; then
-    # Disable original version injection
-    sed -i '\|find ./feeds/luci/modules/luci-mod-status/.*10_system.js|s/^/# /' "$SETTINGS_SCRIPT"
+# 修改 LuCI 版本标识，只保留编译日期
+LUCI_STATUS="./feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js"
+if [ -f "$LUCI_STATUS" ]; then
+    sed -i "s|(luciversion || '')|(luciversion||'') + (' / $WRT_DATE')|" "$LUCI_STATUS"
 
-    # Add new version injection (date only)
-    cat >> "$SETTINGS_SCRIPT" <<'EOF'
-
-# Add build date to LuCI version
-find ./feeds/luci/modules/luci-mod-status/ -type f -name "10_system.js" -exec sed -i "s/(\(luciversion || ''\))/(\1) + (' \/ $WRT_DATE')/g" {} +
-EOF
-
-    echo "LuCI version suffix changed to date only."
+    if grep -Fq "(luciversion||'')" "$LUCI_STATUS"; then
+        echo "LuCI version updated: $WRT_DATE"
+    else
+        echo "ERROR: Failed to update LuCI version"
+        exit 1
+    fi
 else
-    echo "Warning: Settings.sh not found: $SETTINGS_SCRIPT"
+    echo "ERROR: LuCI 10_system.js not found"
+    exit 1
 fi
 
 # 示例 (取消注释即可使用):
