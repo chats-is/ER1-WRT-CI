@@ -58,8 +58,10 @@ CONFIG_PACKAGE_luci-app-wolultra=n
 CONFIG_PACKAGE_luci-app-homeproxy=n
 
 # ============================================================
-# 禁用主题 (使用 aurora + 自维护 argon，不需要其他主题)
+# 禁用主题 (使用 shadcn)
 # ============================================================
+CONFIG_PACKAGE_luci-theme-aurora=n
+CONFIG_PACKAGE_luci-app-aurora-config=n
 CONFIG_PACKAGE_luci-theme-argon=n
 CONFIG_PACKAGE_luci-app-argon-config=n
 CONFIG_PACKAGE_luci-theme-kucat=n
