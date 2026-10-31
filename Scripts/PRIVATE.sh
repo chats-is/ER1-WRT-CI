@@ -112,7 +112,8 @@ if [ -n "$DDNS" ]; then
 fi
 
 # PassWall core packages
-git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git ./package/passwall-packages
+rm -rf ../feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
+git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git ./passwall-packages
 
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
