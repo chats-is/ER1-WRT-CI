@@ -35,7 +35,7 @@ on:
         type: string
       TEST:
         description: '仅输出配置文件，不编译固件。'
-        default: 'false'
+        default: false
         required: false
         type: boolean
 
@@ -64,11 +64,11 @@ jobs:
       # 编译配置
       WRT_CONFIG: ${{ matrix.CONFIG }}
       # ★ 固件参数 (从 GitHub 仓库变量读取，未设置则使用默认值)
-      WRT_THEME: ${{ vars.WRT_THEME || 'aurora' }}
-      WRT_NAME: ${{ vars.WRT_NAME || 'OWRT' }}
-      WRT_SSID: ${{ vars.WRT_SSID || 'OWRT' }}
+      WRT_THEME: ${{ vars.WRT_THEME || 'shadcn' }}
+      WRT_NAME: ${{ vars.WRT_NAME || 'OpenWrt' }}
+      WRT_SSID: ${{ vars.WRT_SSID || 'OpenWrt' }}
       WRT_WORD: ${{ vars.WRT_WORD || '12345678' }}
-      WRT_IP: ${{ vars.WRT_IP || '192.168.10.1' }}
+      WRT_IP: ${{ vars.WRT_IP || '192.168.20.1' }}
       WRT_PW: ${{ vars.WRT_PW || '无' }}
       # 源码配置
       WRT_REPO: https://github.com/${{ matrix.SOURCE }}.git
