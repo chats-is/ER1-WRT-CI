@@ -137,15 +137,16 @@ else
 fi
 
 # ============================================================
-# Remove prefix from LuCI version
+# Remove WRT_MARK prefix from LuCI version
 # ============================================================
-PACKAGES_SCRIPT="$GITHUB_WORKSPACE/Scripts/Packages.sh"
-if [ -f "$PACKAGES_SCRIPT" ]; then
-    sed -i 's/\$WRT_MARK-\$WRT_DATE/$WRT_DATE/g' "$PACKAGES_SCRIPT"
-    echo "LuCI version prefix disabled."
+SETTINGS_SCRIPT="$GITHUB_WORKSPACE/Scripts/Settings.sh"
+if [ -f "$SETTINGS_SCRIPT" ]; then
+    # Keep WRT_DATE, remove WRT_MARK and its trailing hyphen
+    sed -i 's/\$WRT_MARK-\$WRT_DATE/\$WRT_DATE/g' "$SETTINGS_SCRIPT"
+
+    echo "LuCI version prefix WRT_MARK removed."
 else
-    echo "ERROR: Packages.sh not found."
-    exit 1
+    echo "Warning: Settings.sh not found, skipped."
 fi
 
 # 示例 (取消注释即可使用):
