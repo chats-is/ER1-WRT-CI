@@ -111,8 +111,33 @@ if [ -n "$DDNS" ]; then
     sed -i "s/'textarea', { 'style': 'width:100%;/'textarea', { 'style': 'width:100%; overflow-y:auto;/" "$DDNS" && echo "fix: DDNS log scroll"
 fi
 
+# ============================================================
 # PassWall core packages
-rm -rf ../feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
+# ============================================================
+
+# Remove conflicting packages from OpenWrt feeds
+rm -rf ../feeds/packages/net/{
+xray-core,
+v2ray-geodata,
+sing-box,
+chinadns-ng,
+dns2socks,
+hysteria,
+ipt2socks,
+microsocks,
+naiveproxy,
+shadowsocks-rust,
+shadowsocksr-libev,
+simple-obfs,
+tcping,
+v2ray-plugin,
+xray-plugin,
+geoview,
+shadow-tls,
+smartdns
+}
+
+# Clone official PassWall core packages
 git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git ./passwall-packages
 
 # 示例 (取消注释即可使用):
