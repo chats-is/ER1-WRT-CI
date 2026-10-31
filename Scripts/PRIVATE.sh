@@ -140,14 +140,19 @@ fi
 # ============================================================
 # Remove custom firmware version suffix from LuCI
 # ============================================================
-SETTINGS_SCRIPT="$GITHUB_WORKSPACE/Scripts/Settings.sh"
-if [ -f "$SETTINGS_SCRIPT" ]; then
-    # Remove the command that injects WRT_MARK and WRT_DATE
-    sed -i '/WRT_MARK.*WRT_DATE/d' "$SETTINGS_SCRIPT"
-
-    echo "Custom LuCI version suffix disabled."
+SETTINGS_SCRIPT="$(find "$GITHUB_WORKSPACE" \
+    -type f -name 'Settings.sh' -print -quit 2>/dev/null)"
+if [ -n "$SETTINGS_SCRIPT" ]; then
+    if grep -q 'WRT_MARK.*WRT_DATE' "$SETTINGS_SCRIPT"; then
+        sed -i '/WRT_MARK.*WRT_DATE/d' "$SETTINGS_SCRIPT"
+        echo "LuCI custom version suffix removed from: $SETTINGS_SCRIPT"
+    else
+        echo "ERROR: WRT_MARK/WRT_DATE injection not found in $SETTINGS_SCRIPT"
+        exit 1
+    fi
 else
-    echo "Warning: Settings.sh not found: $SETTINGS_SCRIPT"
+    echo "ERROR: Settings.sh not found in workspace."
+    exit 1
 fi
 
 # 示例 (取消注释即可使用):
