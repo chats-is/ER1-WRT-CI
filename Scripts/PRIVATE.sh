@@ -120,27 +120,34 @@ git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-package
 # ============================================================
 # shadcn theme - Remove login image and logo
 # ============================================================
-SHADCN_LOGIN="$(find . -path '*/ucode/template/themes/shadcn/sysauth.ut' -print -quit)"
+SHADCN_LOGIN="$(find . ../feeds/ -path '*/ucode/template/themes/shadcn/sysauth.ut' -print -quit 2>/dev/null)"
 if [ -n "$SHADCN_LOGIN" ]; then
-    # Remove background image
+    # Remove background image CSS
     sed -i '/--login-bg-image:url/d' "$SHADCN_LOGIN"
 
     # Remove right image panel
     sed -i '/<!-- Image panel (right) -->/,/<\/section>/d' "$SHADCN_LOGIN"
 
-    # Remove login logo
-    sed -i '/login-logo/d' "$SHADCN_LOGIN"
+    # Remove login logo block
+    sed -i '/<span class="login-logo/,/<\/span>/d' "$SHADCN_LOGIN"
 
     echo "shadcn login image and logo removed."
 else
     echo "Warning: shadcn sysauth.ut not found."
 fi
 
-# Remove repository owner from LuCI version
-SETTINGS="$GITHUB_WORKSPACE/Scripts/Settings.sh"
-if [ -f "$SETTINGS" ]; then
-    sed -i 's/\$WRT_MARK-\$WRT_DATE/\$WRT_DATE/g' "$SETTINGS"
-    echo "LuCI version: removed WRT_MARK prefix"
+
+# ============================================================
+# Remove custom firmware version suffix from LuCI
+# ============================================================
+SETTINGS_SCRIPT="$GITHUB_WORKSPACE/Scripts/Settings.sh"
+if [ -f "$SETTINGS_SCRIPT" ]; then
+    # Remove the command that injects WRT_MARK and WRT_DATE
+    sed -i '/WRT_MARK.*WRT_DATE/d' "$SETTINGS_SCRIPT"
+
+    echo "Custom LuCI version suffix disabled."
+else
+    echo "Warning: Settings.sh not found: $SETTINGS_SCRIPT"
 fi
 
 # 示例 (取消注释即可使用):
