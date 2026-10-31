@@ -141,12 +141,10 @@ fi
 # ============================================================
 SETTINGS_SCRIPT="$GITHUB_WORKSPACE/Scripts/Settings.sh"
 if [ -f "$SETTINGS_SCRIPT" ]; then
-    # Keep WRT_DATE, remove WRT_MARK and its trailing hyphen
     sed -i 's/\$WRT_MARK-\$WRT_DATE/\$WRT_DATE/g' "$SETTINGS_SCRIPT"
-
-    echo "LuCI version prefix WRT_MARK removed."
+    echo "LuCI version date suffix updated."
 else
-    echo "Warning: Settings.sh not found, skipped."
+    echo "Warning: Settings.sh not found: $SETTINGS_SCRIPT"
 fi
 
 # 示例 (取消注释即可使用):
