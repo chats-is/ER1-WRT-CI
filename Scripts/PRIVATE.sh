@@ -136,6 +136,13 @@ else
     echo "Warning: shadcn sysauth.ut not found."
 fi
 
+# Remove repository owner from LuCI version
+SETTINGS="$GITHUB_WORKSPACE/Scripts/Settings.sh"
+if [ -f "$SETTINGS" ]; then
+    sed -i 's/\$WRT_MARK-\$WRT_DATE/\$WRT_DATE/g' "$SETTINGS"
+    echo "LuCI version: removed WRT_MARK prefix"
+fi
+
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
 # sed -i 's/\/bin\/ash/\/bin\/bash/' "$GITHUB_WORKSPACE/wrt/package/base-files/files/etc/passwd"
