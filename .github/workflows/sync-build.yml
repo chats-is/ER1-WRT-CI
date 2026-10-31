@@ -131,6 +131,8 @@ jobs:
           [ -f /tmp/backup/.github/workflows/sync-build.yml ] && cp /tmp/backup/.github/workflows/sync-build.yml .github/workflows/sync-build.yml && echo "overlaid: sync-build.yml"
           [ -f /tmp/backup/.github/workflows/build-firmware.yml ] && cp /tmp/backup/.github/workflows/build-firmware.yml .github/workflows/build-firmware.yml && echo "overlaid: build-firmware.yml"
           [ -f /tmp/backup/README.md ] && cp /tmp/backup/README.md README.md && echo "overlaid: README.md"
+          # 去掉 Settings.sh 里的 $WRT_MARK-
+          sed -i 's/\$WRT_MARK-\$WRT_DATE/\$WRT_DATE/g' Scripts/Settings.sh
           
           # 手动填写 PACKAGE 时，烧录进 PRIVATE.txt (.config 最后追加，优先级最高)
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ -n "${{ inputs.PACKAGE }}" ]; then
