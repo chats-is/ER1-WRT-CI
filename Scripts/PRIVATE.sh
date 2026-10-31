@@ -136,22 +136,6 @@ else
     echo "Warning: shadcn sysauth.ut not found."
 fi
 
-# 修改 LuCI 版本标识，只保留编译日期
-LUCI_STATUS="./feeds/luci/modules/luci-mod-status/htdocs/luci-static/resources/view/status/include/10_system.js"
-if [ -f "$LUCI_STATUS" ]; then
-    sed -i "s|(luciversion || '')|(luciversion||'') + (' / $WRT_DATE')|" "$LUCI_STATUS"
-
-    if grep -Fq "(luciversion||'')" "$LUCI_STATUS"; then
-        echo "LuCI version updated: $WRT_DATE"
-    else
-        echo "ERROR: Failed to update LuCI version"
-        exit 1
-    fi
-else
-    echo "ERROR: LuCI 10_system.js not found"
-    exit 1
-fi
-
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
 # sed -i 's/\/bin\/ash/\/bin\/bash/' "$GITHUB_WORKSPACE/wrt/package/base-files/files/etc/passwd"
