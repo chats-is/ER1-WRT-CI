@@ -136,22 +136,28 @@ else
     echo "Warning: shadcn sysauth.ut not found."
 fi
 
-
 # ============================================================
 # Remove custom firmware version suffix from LuCI
 # ============================================================
-SETTINGS_SCRIPT="$(find "$GITHUB_WORKSPACE" \
-    -type f -name 'Settings.sh' -print -quit 2>/dev/null)"
-if [ -n "$SETTINGS_SCRIPT" ]; then
-    if grep -q 'WRT_MARK.*WRT_DATE' "$SETTINGS_SCRIPT"; then
-        sed -i '/WRT_MARK.*WRT_DATE/d' "$SETTINGS_SCRIPT"
-        echo "LuCI custom version suffix removed from: $SETTINGS_SCRIPT"
-    else
-        echo "ERROR: WRT_MARK/WRT_DATE injection not found in $SETTINGS_SCRIPT"
-        exit 1
-    fi
+SETTINGS_SCRIPTS="$(grep -rlF \
+    --include='*.sh' \
+    --exclude-dir='.git' \
+    'WRT_MARK-$WRT_DATE' \
+    "$GITHUB_WORKSPACE" 2>/dev/null)"
+if [ -n "$SETTINGS_SCRIPTS" ]; then
+    while IFS= read -r SCRIPT; do
+        # Remove the command that appends WRT_MARK-WRT_DATE
+        sed -i '/WRT_MARK-\$WRT_DATE/d' "$SCRIPT"
+
+        if grep -Fq 'WRT_MARK-$WRT_DATE' "$SCRIPT"; then
+            echo "ERROR: Failed to patch $SCRIPT"
+            exit 1
+        fi
+
+        echo "Removed LuCI version injection from: $SCRIPT"
+    done <<< "$SETTINGS_SCRIPTS"
 else
-    echo "ERROR: Settings.sh not found in workspace."
+    echo "ERROR: Cannot find the LuCI version injection script."
     exit 1
 fi
 
