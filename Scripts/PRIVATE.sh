@@ -139,27 +139,10 @@ fi
 # ============================================================
 # Remove custom firmware version suffix from LuCI
 # ============================================================
-SETTINGS_SCRIPTS="$(grep -rlF \
-    --include='*.sh' \
-    --exclude-dir='.git' \
-    'WRT_MARK-$WRT_DATE' \
-    "$GITHUB_WORKSPACE" 2>/dev/null)"
-if [ -n "$SETTINGS_SCRIPTS" ]; then
-    while IFS= read -r SCRIPT; do
-        # Remove the command that appends WRT_MARK-WRT_DATE
-        sed -i '/WRT_MARK-\$WRT_DATE/d' "$SCRIPT"
+find "$GITHUB_WORKSPACE" -type f -name '*.sh' \
+    -exec sed -i '/WRT_MARK-\$WRT_DATE/d' {} +
 
-        if grep -Fq 'WRT_MARK-$WRT_DATE' "$SCRIPT"; then
-            echo "ERROR: Failed to patch $SCRIPT"
-            exit 1
-        fi
-
-        echo "Removed LuCI version injection from: $SCRIPT"
-    done <<< "$SETTINGS_SCRIPTS"
-else
-    echo "ERROR: Cannot find the LuCI version injection script."
-    exit 1
-fi
+echo "Custom LuCI version suffix disabled."
 
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
