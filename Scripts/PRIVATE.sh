@@ -137,12 +137,16 @@ else
 fi
 
 # ============================================================
-# Remove custom firmware version suffix from LuCI
+# Remove prefix from LuCI version
 # ============================================================
-find "$GITHUB_WORKSPACE" -type f -name '*.sh' \
-    -exec sed -i '/WRT_MARK-\$WRT_DATE/d' {} +
-
-echo "Custom LuCI version suffix disabled."
+PACKAGES_SCRIPT="$GITHUB_WORKSPACE/Scripts/Packages.sh"
+if [ -f "$PACKAGES_SCRIPT" ]; then
+    sed -i 's/\$WRT_MARK-\$WRT_DATE/$WRT_DATE/g' "$PACKAGES_SCRIPT"
+    echo "LuCI version prefix disabled."
+else
+    echo "ERROR: Packages.sh not found."
+    exit 1
+fi
 
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
