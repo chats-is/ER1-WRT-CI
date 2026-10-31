@@ -117,6 +117,24 @@ fi
 rm -rf ../feeds/packages/net/{xray-core,v2ray-geodata,sing-box,chinadns-ng,dns2socks,hysteria,ipt2socks,microsocks,naiveproxy,shadowsocks-rust,shadowsocksr-libev,simple-obfs,tcping,v2ray-plugin,xray-plugin,geoview,shadow-tls,smartdns}
 git clone --depth 1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git ./passwall-packages
 
+# ============================================================
+# shadcn theme - Remove login image and center login form
+# ============================================================
+
+SHADCN_LOGIN="$(find . -path '*/ucode/template/themes/shadcn/sysauth.ut' -print -quit)"
+
+if [ -n "$SHADCN_LOGIN" ]; then
+    # Remove login background image
+    sed -i '/--login-bg-image:url/d' "$SHADCN_LOGIN"
+
+    # Remove right image panel
+    sed -i '/<!-- Image panel (right) -->/,/<\/section>/d' "$SHADCN_LOGIN"
+
+    echo "shadcn login image removed; login form centered."
+else
+    echo "Warning: shadcn sysauth.ut not found."
+fi
+
 # 示例 (取消注释即可使用):
 # 修改默认 Shell 为 bash
 # sed -i 's/\/bin\/ash/\/bin\/bash/' "$GITHUB_WORKSPACE/wrt/package/base-files/files/etc/passwd"
